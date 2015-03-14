@@ -19,10 +19,15 @@
 <div class="well well-small" style="display: none;" id="comment_<?php echo $id; ?>">
     <div class="comment" id="comments_area_<?php echo $id; ?>">
 
-        <?php foreach ($comments as $comment) : ?>
-            <?php $this->widget('application.modules_core.comment.widgets.ShowCommentWidget', array('comment' => $comment)); ?>
-        <?php endforeach; ?>
         <?php if ($isLimited): ?>
+            <?php 
+                $limit = count($comments) == 2 ? 1 : 2;
+                $c = 0;
+                foreach ($comments as $comment) : 
+                    if ($c++ == $limit) break;
+            ?>
+                <?php $this->widget('application.modules_core.comment.widgets.ShowCommentWidget', array('comment' => $comment)); ?>
+            <?php endforeach; ?>
             <?php
             // Create an ajax link, which loads all comments upon request
             $showAllLabel = Yii::t('CommentModule.widgets_views_comments', 'Show all {total} comments.', array('{total}' => $total));
@@ -32,9 +37,20 @@
             <?php
             echo HHtml::ajaxLink($showAllLabel, $reloadUrl, array(
                 'success' => "function(html) { $('#comments_area_" . $id . "').html(html); }",
-                    ), array('id' => $id . "_showAllLink", 'class' => 'show show-all-link pull-right'));
+                    ), array('id' => $id . "_showAllLink", 'class' => 'show show-all-link'));
             ?>
+            <?php 
+                $c = 0;
+                foreach ($comments as $comment) : 
+                    if ($c++ < $limit) continue;
+            ?>
+                <?php $this->widget('application.modules_core.comment.widgets.ShowCommentWidget', array('comment' => $comment)); ?>
+            <?php endforeach; ?>
             </div>
+        <?php else: ?>
+            <?php foreach ($comments as $comment) : ?>
+                <?php $this->widget('application.modules_core.comment.widgets.ShowCommentWidget', array('comment' => $comment)); ?>
+            <?php endforeach; ?>
         <?php endif; ?>
     </div>
 
