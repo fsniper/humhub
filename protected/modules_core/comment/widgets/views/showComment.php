@@ -14,7 +14,7 @@ $canWrite = $comment->canWrite();
 $canDelete = $comment->canDelete();
 ?>
 
-<div class="media" id="comment_<?php echo $comment->id; ?>">
+<div class="media commentholder" id="comment_<?php echo $comment->id; ?>">
     <?php if ($canWrite || $canDelete) : ?>
 
         <ul class="nav nav-pills preferences">
@@ -69,16 +69,17 @@ $canDelete = $comment->canDelete();
 
         <div class="content" id="comment_editarea_<?php echo $comment->id; ?>">
             <span id="comment-message-<?php echo $comment->id; ?>"><?php print HHtml::enrichText($comment->message); ?>
-                <h4 class="comment-author pull-right"><a href="<?php echo $user->getProfileUrl(); ?>"><?php echo CHtml::encode($user->displayName); ?></a>
-                    <small><?php echo HHtml::timeago($comment->created_at); ?>
+                <span class="comment-author"><a href="<?php echo $user->getProfileUrl(); ?>"><?php echo CHtml::encode($user->displayName); ?></a>
+                    (
+                        <?php Yii::app()->getController()->widget('application.modules_core.like.widgets.LikeLinkWidget', array('object' => $comment)); ?>
+                    )
+                    <small class="hiddentime hidden">
+                        <?php echo HHtml::timeago($comment->created_at); ?>
                         <?php if ($comment->created_at != $comment->updated_at): ?>
                             (<?php echo Yii::t('CommentModule.widgets_views_showComment', 'Updated :timeago', array(':timeago' => HHtml::timeago($comment->updated_at))); ?>)
                         <?php endif; ?>
-                        (
-                            <?php Yii::app()->getController()->widget('application.modules_core.like.widgets.LikeLinkWidget', array('object' => $comment)); ?>
-                        )
                     </small>
-                </h4>
+                </span>
             </span>
             <?php $this->widget('application.modules_core.file.widgets.ShowFilesWidget', array('object' => $comment)); ?>
         </div>
