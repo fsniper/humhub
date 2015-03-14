@@ -845,3 +845,7 @@ textarea.placeholder {
     margin-left: -142px !important;
   }
 }
+
+.comment-author {
+    font-size: 10px;
+}
