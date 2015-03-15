@@ -847,5 +847,13 @@ textarea.placeholder {
 }
 
 .comment-author {
+    margin-left: 20px;
     font-size: 10px;
+    color: #a5a5a5;
+}
+.comment-author a {
+    color: #a5a5a5 !important;
+}
+.well {
+        background-color: #f9f9f9!important;
 }
