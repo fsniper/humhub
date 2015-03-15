@@ -7,7 +7,16 @@ $followers = $user->getFollowers(array('limit' => 16));
         <!-- Display panel menu widget -->
         <?php $this->widget('application.widgets.PanelMenuWidget', array('id' => 'profile-follower-panel')); ?>
 
-        <div class="panel-heading"><?php echo Yii::t('UserModule.widgets_views_userFollower', '<strong>User</strong> followers'); ?></div>
+        <div class="panel-heading"><?php echo Yii::t('UserModule.widgets_views_userFollower', '<strong>User</strong> followers'); ?>
+            <small class="pull-right" style="margin-right: 30px;">
+            <?php 
+                if ($limit < 999) {
+                    echo HHtml::postLink('View All', $this->createUrl('//user/profile/following', array('uguid' => $user->guid)));    
+                }
+
+            ?> 
+            </small>
+        </div>
 
         <div class="panel-body">
             <?php foreach ($followers as $follower): ?>
@@ -35,6 +44,15 @@ $following = $user->getFollowingObjects('User', array('limit' => 16));
 
         <div class="panel-heading">
             <?php echo Yii::t('UserModule.widgets_views_userFollower', '<strong>Following</strong> user'); ?>
+
+            <small class="pull-right" style="margin-right: 30px;">
+            <?php 
+                if ($limit < 999) {
+                    echo HHtml::postLink('View All', $this->createUrl('//user/profile/following', array('uguid' => $user->guid)));    
+                }
+
+            ?> 
+            </small>
         </div>
 
         <div class="panel-body">
