@@ -30,6 +30,9 @@ return CMap::mergeArray($pre_config, array(
             // application components
             'components' => array(
                 // Session specific settings
+                'preload' => array(
+                    'yiiredis'
+                ),
                 'session' => array(
                 ),
                 'user' => array(
@@ -51,6 +54,13 @@ return CMap::mergeArray($pre_config, array(
                 'errorHandler' => array(
                     // use 'site/error' action to display errors
                     'errorAction' => '//site/error',
+                ),
+                "redis" => array(
+                    "class" => "ext.yiiredis.ARedisConnection",
+                    "hostname" => "localhost",
+                    "port" => 6379,
+                    "database" => 0,
+                    "prefix" => ""
                 ),
             ),
         ));

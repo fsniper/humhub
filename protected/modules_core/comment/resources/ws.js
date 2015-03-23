@@ -13,26 +13,30 @@ $(
 
         function connect() {
             try {
-                socket = new WebSocket("ws://fetfrip.com:8888");
+                socket = new WebSocket("ws://faraday.mobilada.net:8888");
+                socket.onopen = connectionEstablished;
                 socket.onmessage = newResponse;
+                socket.onerror = onError;
             } catch (e) {
                 console.log("could not connect ws");
             }
         
         }
         function newResponse(payload) {
+
             data = $.parseJSON(payload.data);
-            if (data && data.command && data.data) {
+            if (data && data.command) {
                 
-                // Object to array
-                var sorted_comments = [];
-                for (var i in data.data) {
-                          sorted_comments[i] = data.data[i];
-                }
+                if (data.command == 'new_comments') {
+                    if (data.comments.length == 0) return;
+                    // Object to array
+                    var sorted_comments = [];
+                    for (i in data.comments) {
+                        sorted_comments.push(data.comments[i]); 
+                    };
+                    sorted_comments.sort();
 
-                if (data.command == 'last' && sorted_comments.length) {
-
-                    var area = $('#comments_area_Post_' + data.post_id);
+                    var area = $('#comments_area_Post_' + data.post);
                     var last_comment = area.find('div.media:last');
                     
                     if (last_comment.length > 0) {
@@ -40,9 +44,8 @@ $(
                         var cid = (last_comment.attr('id')).match(/[0-9]*$/)[0];
                         for (i in sorted_comments){
                             var comment = $(sorted_comments[i]);
-                            console.log(comment);
+                            
                             if (comment) {
-                                console.log(comment[0]);
                                 var id = ($(comment[0]).attr('id')).match(/[0-9]*$/)[0];
                                 if (id > cid) {
                                     area.
@@ -69,43 +72,59 @@ $(
                         }
 
                     }
+                } else if (data.command == 'identify') {
+                    socket.send(JSON.stringify({ command: 'identity', cookie: document.cookie, username: $('.user-title strong').text() })); 
+                    commandPosts();
+                } else if (data.command == 'posts') {
+                    commandPosts();
                 }
             }
         }
+        function commandPosts() {
+                    var posts = $('.post').map(function (i,e) {
+                        return $(e).attr('id').match(/[0-9]*$/)[0];
+                    });
+                   
+                    socket.send(JSON.stringify({ command: 'posts', posts: $.makeArray(posts) })); 
+        }
+        function connectionEstablished() {
+            socket.send(JSON.stringify({ command: 'ready' }));
+            initialized = true;
+        }
+
+        function onError() {
+            $('.notifications').append("err: rt off");
+        }
 
         function checkComments() {
+            if (typeof initialized == 'undefined') {
+                connectionEstablished();
+            }
             if (typeof document.hidden === 'undefined' || !document.hidden) {
                 // we are on the tab or browser does not support visibility API
                 // http://www.w3.org/TR/page-visibility/?csw=1#sec-document-interface
                 var commands = "";
-                console.log(commands);
                 $('div.post div.comment').each(function (i,e) {
                     var comments = $(e);
                     var container = comments.closest('div.wall-entry'); 
                     if (container.isOnScreen()) {
-                        var post_id = (comments.attr("id")).match(/[0-9]*$/);
+                        var post_id = (comments.attr("id")).match(/[0-9]*$/)[0];
                         var id = comments.find("div.content:last");
                         if (id.length) {
                             comment_id = (id.attr('id')).match(/[0-9]*$/)[0];
                         } else {
                             comment_id = -1;
                         }
-                        // instead of sending directly merge them
-                        // this is used to workaround https://github.com/ghedipunk/PHP-Websockets/issues/22
-                        commands = commands + "last|" + post_id +"|" + comment_id + "#";
+                        socket.send(JSON.stringify({ command: "new_comments", post: post_id, comment: comment_id }));
                     }
                 });
-                if (commands.length > 0) {
-                    console.log(commands);
-                    socket.send(commands);
-                }
             }
         }
         if (typeof socket === 'undefined') {
             socket = "";
             connect();
             if (typeof check_comment_interval === 'undefined') {
-                check_comment_interval = setInterval(checkComments, 5000);
+                //check_comment_interval = setInterval(checkComments, 5000);
             }
         }
     }
