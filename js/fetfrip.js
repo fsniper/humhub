@@ -1,3 +1,13 @@
+/**
+*  This file is copied from friendfeed bookmarklet and modified
+*  for fetfrip.com. 
+*
+*  All rights of the original file belongs to Facebook, Inc.
+*/
+
+/** 
+*  Need some cleaning.  
+*/ 
 (function () {
     var kMinImageSize = 30;
     var kOutlineColor = "#1030cc";
