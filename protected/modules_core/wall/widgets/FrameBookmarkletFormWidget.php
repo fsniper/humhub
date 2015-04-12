@@ -19,9 +19,9 @@
  */
 
 /**
- * Description of ContentFormWidget
+ * Description of FrameBookmarkletFormWidget
  *
- * @author luke
+ * @author Samet
  */
 class FrameBookmarkletFormWidget extends HWidget {
 

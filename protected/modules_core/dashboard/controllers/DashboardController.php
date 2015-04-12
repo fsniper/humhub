@@ -67,7 +67,7 @@ class DashboardController extends Controller {
     /**
      * Dashboard Frame
      *
-     * Show recent wall entries for this user
+     * Show a mini input area in iframe.
      */
     public function actionFrame() {
 

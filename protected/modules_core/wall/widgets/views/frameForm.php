@@ -8,14 +8,6 @@
 
         <?php echo $form; ?>
 
-        <?php
-
-        /* Modify textarea for mention input */
-        //$this->widget('application.widgets.HEditorWidget', array(
-        //    'id' => 'contentForm_message',
-        //));
-
-        ?>
 
 
         <?php
@@ -128,7 +120,5 @@ $('#contentForm_message').focus();
     // set the size for one row (Firefox)
     $('textarea').css({height: '72px', width: '100%'});
 
-    // add autosize function to input
-    //$('.autosize').autosize();
 
 </script>

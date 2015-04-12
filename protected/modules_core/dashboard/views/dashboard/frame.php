@@ -1,11 +1,10 @@
 <?php
 /**
- * Created by Andreas Strobel
- * Date: 25.06.13
+ * Created by Samet Atdag
+ * Date: 08.04.15
  */
 ?>
 <div class="container">
-    <!-- Example row of columns -->
     <div class="row">
         <div class="col-md-8">
             <?php

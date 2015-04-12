@@ -2,7 +2,6 @@
 
 /**
  * This widget is used include the post form.
- * It normally should be placed above a steam.
  *
  * @package humhub.modules_core.post.widgets
  * @since 0.5
