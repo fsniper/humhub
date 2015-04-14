@@ -32,6 +32,11 @@
                     $('#contentFormError').empty();
                 }",
                         'success' => "function(response) {
+                            $('hr').hide()
+                            $('textarea').hide()
+                            $('div.btn_container').hide()
+                            var span = $('<span />').html('Gönderildi');
+                            $('form').append(span);
                     if (response.success) {
 
                         // application.modules_core.wall function
