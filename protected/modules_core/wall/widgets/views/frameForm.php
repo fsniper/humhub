@@ -1,3 +1,4 @@
+<meta charset="utf-8">
 <div class="panel panel-default">
     <div class="panel-body" id="contentFormBody">
 
