@@ -60,7 +60,7 @@
         closeButton.style.float = "right";
         closeButton.style.marginRight = "5px";
         closeButton.style.marginTop = "-25px";
-        closeButton.innerHTML = '<a href="#"><img src="http://fetfrip.com/img/close_gray.png"></a>';
+        closeButton.innerHTML = '<a href="#"><img src="https://fetfrip.com/img/close_gray.png"></a>';
         closeButton.onclick = close;
 
 
@@ -288,7 +288,7 @@
             iframe = document.getElementById("ff__iframe").contentWindow;
         }
         if (!iframe) return;
-        var url = 'http://fetfrip.com';
+        var url = 'https://fetfrip.com';
         url += '/dashboard/dashboard/frame?' + p;
         try {
             console.log("-----------");
@@ -365,7 +365,7 @@
     }
     if (document.getElementsByTagName('head').length == 0 ||
         frames.length > document.getElementsByTagName('iframe').length) {
-        window.location.href = 'http://fetfrip.com/dashboard/dashboard/frame?=' + escape(window.location.href);
+        window.location.href = 'https://fetfrip.com/dashboard/dashboard/frame?=' + escape(window.location.href);
     } else {
         bookmarklet();
     }
