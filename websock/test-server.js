@@ -2,6 +2,7 @@ var WebSocketServer = require('ws').Server,
     uuid = require("uuid"),
     redis = require("redis"),
     request = require("request"),
+    async = require("async"),
     util = require("util");
 
 var
@@ -10,6 +11,32 @@ var
     clients = {};
 
 redisc = init_redis();
+
+
+
+var logout_user = function(key) {
+        console.log("client %s disconnected", key);
+
+        clients[key] = null;
+        delete clients[key];
+
+        redisc.hget(key, 'posts', function (err, posts) {
+            if (posts == null || posts == "") return;
+            posts = posts.split(",")
+            for (i in posts) {
+                async.series([
+                    function(){  
+                        redisc.lrem('onscreen_posts', 1, posts[i], redis.print)
+                    },
+                    function(){ 
+                        redisc.srem('post_clients_' + posts[i], key, redis.print)
+                    }
+                ]);
+            }
+            redisc.del(key, function() {});
+        })
+    }
+
 
 wss.on('connection', function(ws) {
   
@@ -20,21 +47,7 @@ wss.on('connection', function(ws) {
         console.log('received: %s from client %s', message, key);
         processMessage(ws, message, key);
     });
-    ws.on('close', function() {
-        console.log("client %s disconnected", key);
-
-        clients[key] = null;
-        delete clients[key];
-
-        redisc.hget(key, 'posts', function (err, posts) {
-            posts = posts.split(",")
-            for (i in posts) {
-                redisc.lrem('onscreen_posts', 1, posts[i], redis.print)
-                redisc.srem('post_clients_' + posts[i], key, redis.print)
-            }
-            redisc.del(key, function() {});
-        })
-    });
+    ws.on('close', function () { logout_user(key); });
 
 }); 
 
@@ -137,6 +150,11 @@ function getComments(ws, key, post, comment) {
             console.log("Error for client: %s e: %s", key, err)
             return;
         }
+        if (cookie == null || cookie == "") {
+            console.log("User is logged out");
+            logout_user(key);
+            return;
+        }
         var url = util.format("%s?r=%s&model=%s&id=%d&cid=%d", apibase, 'comment/comment/apicomment','Post', post, comment);
 
         var jar = request.jar();
@@ -158,7 +176,9 @@ function getComments(ws, key, post, comment) {
                     ws.send(JSON.stringify({ command: 'new_comments', post: post, comments: JSON.parse(body) }));
                 } catch(e) {
                     console.log("Error %s", e);
-                    console.log(body);
+                    if (body.match(/AccountLoginForm/)) {
+                        logout_user(key);
+                    }
                 }
             }
         );
