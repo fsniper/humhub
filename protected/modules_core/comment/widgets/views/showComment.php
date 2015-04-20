@@ -13,7 +13,6 @@
 $canWrite = $comment->canWrite();
 $canDelete = $comment->canDelete();
 ?>
-<?php if (array_search(Yii::app()->user->id, [1,4,20,437]) !== false): ?>
 
 <div class="media fetfrip-comment" id="comment_<?php echo $comment->id; ?>">
     <?php if ($canWrite || $canDelete) : ?>
@@ -89,84 +88,6 @@ $canDelete = $comment->canDelete();
     </div>
 </div>
 
-<?php else: ?>
-
-<div class="media" id="comment_<?php echo $comment->id; ?>">
-    <?php if ($canWrite || $canDelete) : ?>
-
-        <ul class="nav nav-pills preferences">
-            <li class="dropdown ">
-                <a class="dropdown-toggle" data-toggle="dropdown" href="#"><i class="fa fa-angle-down"></i></a>
-
-                <ul class="dropdown-menu pull-right">
-
-                    <?php if ($canWrite): ?>
-                        <li>
-                            <?php
-                            echo HHtml::ajaxLink('<i class="fa fa-pencil"></i> '. Yii::t('CommentModule.widgets_views_showComment', 'Edit'), Yii::app()->createAbsoluteUrl('//comment/comment/edit', array('id' => $comment->id)), array(
-                                'success' => "js:function(html){ $('.preferences .dropdown').removeClass('open'); $('#comment_editarea_" . $comment->id . "').replaceWith(html); $('#comment_input_" . $comment->id . "_contenteditable').focus(); }"
-                            ));
-                            ?>
-                        </li>
-                    <?php endif; ?>
-
-                    <?php if ($canDelete): ?>
-                        <li>
-
-                            <!-- load modal confirm widget -->
-                            <?php
-                            $this->widget('application.widgets.ModalConfirmWidget', array(
-                                'uniqueID' => 'modal_commentdelete_' . $comment->id,
-                                'linkOutput' => 'a',
-                                'title' => Yii::t('CommentModule.widgets_views_showComment', '<strong>Confirm</strong> comment deleting'),
-                                'message' => Yii::t('CommentModule.widgets_views_showComment', 'Do you really want to delete this comment?'),
-                                'buttonTrue' => Yii::t('CommentModule.widgets_views_showComment', 'Delete'),
-                                'buttonFalse' => Yii::t('CommentModule.widgets_views_showComment', 'Cancel'),
-                                'linkContent' => '<i class="fa fa-trash-o"></i> ' . Yii::t('CommentModule.widgets_views_showComment', 'Delete'),
-                                'linkHref' => $this->createUrl("//comment/comment/delete", array('model' => $comment->object_model, 'id' => $comment->object_id, 'cid' => $comment->id)),
-                                'confirmJS' => "function(html) { $('#comments_area_" . $comment->object_model . "_" . $comment->object_id . "').html(html); }"
-                            ));
-                            ?>
-                        </li>
-                    <?php endif; ?>
-                </ul>
-            </li>
-        </ul>
-
-    <?php endif; ?>
-
-    <a href="<?php echo $user->getUrl(); ?>" class="pull-left">
-        <img class="media-object img-rounded user-image" src="<?php echo $user->getProfileImage()->getUrl(); ?>"
-             width="40"
-             height="40" alt="40x40" data-src="holder.js/40x40" style="width: 40px; height: 40px;"/>
-    </a>
-
-    <div class="media-body">
-        <h4 class="media-heading"><a href="<?php echo $user->getProfileUrl(); ?>"><?php echo CHtml::encode($user->displayName); ?></a>
-            <small><?php echo HHtml::timeago($comment->created_at); ?>
-                <?php if ($comment->created_at != $comment->updated_at): ?>
-                    (<?php echo Yii::t('CommentModule.widgets_views_showComment', 'Updated :timeago', array(':timeago' => HHtml::timeago($comment->updated_at))); ?>)
-                <?php endif; ?>
-            </small>
-        </h4>
-
-
-        <div class="content" id="comment_editarea_<?php echo $comment->id; ?>">
-            <span id="comment-message-<?php echo $comment->id; ?>"><?php print HHtml::enrichText($comment->message); ?></span>
-            <?php $this->widget('application.modules_core.file.widgets.ShowFilesWidget', array('object' => $comment)); ?>
-        </div>
-
-
-
-        <div class="wall-entry-controls">
-            <?php Yii::app()->getController()->widget('application.modules_core.like.widgets.LikeLinkWidget', array('object' => $comment)); ?>
-        </div>
-    </div>
-    <hr>
-</div>
-
-
-<?php endif ?>
 
 <?php if ($justEdited): ?>
     <script type="text/javascript">
