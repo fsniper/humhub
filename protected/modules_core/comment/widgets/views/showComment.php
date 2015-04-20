@@ -13,7 +13,7 @@
 $canWrite = $comment->canWrite();
 $canDelete = $comment->canDelete();
 ?>
-<?php if (array_search($user->id, [2,1]) !== false): ?>
+<?php if (array_search(Yii::app()->user->id, [1]) !== false): ?>
 
 <div class="media fetfrip-comment" id="comment_<?php echo $comment->id; ?>">
     <?php if ($canWrite || $canDelete) : ?>
