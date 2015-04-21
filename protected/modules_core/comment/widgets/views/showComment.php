@@ -67,7 +67,7 @@ $canDelete = $comment->canDelete();
 
     <div class="media-body">
         <h4 class="media-heading">
-            <span id="comment-message-<?php echo $comment->id; ?>"><?php print HHtml::enrichText($comment->message); ?> - </span>
+            <span id="comment-message-<?php echo $comment->id; ?>" style='font-size:13px'><?php print HHtml::enrichText($comment->message); ?> - </span>
             <a class="fetfrip-username" href="<?php echo $user->getProfileUrl(); ?>"><?php echo CHtml::encode($user->displayName); ?></a>
             <small class="fetfrip-timestamp"><?php echo HHtml::timeago($comment->created_at); ?>
                 <?php if ($comment->created_at != $comment->updated_at): ?>
