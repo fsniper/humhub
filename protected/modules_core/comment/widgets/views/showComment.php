@@ -13,7 +13,7 @@
 $canWrite = $comment->canWrite();
 $canDelete = $comment->canDelete();
 ?>
-<?php if (array_search(Yii::app()->user->id, [1]) !== false): ?>
+<?php if (array_search(Yii::app()->user->id, [1,4,20,437]) !== false): ?>
 
 <div class="media fetfrip-comment" id="comment_<?php echo $comment->id; ?>">
     <?php if ($canWrite || $canDelete) : ?>
@@ -67,7 +67,7 @@ $canDelete = $comment->canDelete();
 
     <div class="media-body">
         <h4 class="media-heading">
-            <span id="comment-message-<?php echo $comment->id; ?>"><?php print HHtml::enrichText($comment->message); ?></span>
+            <span id="comment-message-<?php echo $comment->id; ?>"><?php print HHtml::enrichText($comment->message); ?> - </span>
             <a class="fetfrip-username" href="<?php echo $user->getProfileUrl(); ?>"><?php echo CHtml::encode($user->displayName); ?></a>
             <small class="fetfrip-timestamp"><?php echo HHtml::timeago($comment->created_at); ?>
                 <?php if ($comment->created_at != $comment->updated_at): ?>

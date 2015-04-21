@@ -849,11 +849,12 @@ textarea.placeholder {
 .fetfrip-comment .like,
 .fetfrip-comment .unlike {
     font-size: 10px;
-    color: #721cfe !important; 
+    color: #7777cc !important; 
 }
 
 .fetfrip-username {
     font-size: 9px;
+    color: #7777cc !important;
 }
 
 .media .time {
