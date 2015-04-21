@@ -13,7 +13,7 @@ $(
 
         function connect() {
             try {
-                socket = new WebSocket("ws://faraday.mobilada.net:8888");
+                socket = new WebSocket("ws://fetfrip.com:8888");
                 socket.onopen = connectionEstablished;
                 socket.onmessage = newResponse;
                 socket.onerror = onError;

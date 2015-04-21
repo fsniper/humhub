@@ -6,7 +6,7 @@ var WebSocketServer = require('ws').Server,
     util = require("util");
 
 var
-    apibase = "https://faraday.mobilada.net/~yalazi/fetfrip/",
+    apibase = "https://fetfrip.com",
     wss = new WebSocketServer( { port: 8888 }),
     clients = {};
 
