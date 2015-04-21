@@ -21,6 +21,7 @@
  * @package humhub.modules_core.comment.models
  * @since 0.5
  */
+
 class Comment extends HActiveRecordContentAddon
 {
 
@@ -110,9 +111,16 @@ class Comment extends HActiveRecordContentAddon
         if ($this->isNewRecord) {
             // Send Notifications
             NewCommentNotification::fire($this);
+
+            if ($this->object_model == 'Post') {
+                Yii::import('ext.yiiredis.ARedisChannel');
+                Yii::import('ext.yiiredis.ARedisIterableEntity');
+                Yii::import('ext.yiiredis.ARedisEntity');
+                $channel = new ARedisChannel("comment-updates");
+                $channel->publish(json_encode(['post' => $this->object_id, 'comment' => $this->id]));
+            }
         }
         
-
         return parent::afterSave();
     }
 
