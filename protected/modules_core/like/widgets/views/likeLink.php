@@ -73,8 +73,8 @@ list($className, $modelId) = explode("_", $id);
        class="tt" data-toggle="modal"
        data-placement="top" title="" data-target="#globalModal"
        data-original-title="<?php echo $userlist; ?>"><span
-            class="<?php echo $id . "-LikeCount"; ?>"></span></a>
+            class="<?php echo $id . "-LikeCount"; ?>" style="font-size:10px"></span></a>
 <?php } else { ?>
-    <span class="<?php echo $id . "-LikeCount"; ?>"></span>
+    <span class="<?php echo $id . "-LikeCount"; ?>" style="font-size:10px"></span>
 <?php } ?>
 
