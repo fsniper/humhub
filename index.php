@@ -36,4 +36,7 @@ EZendAutoloader::$prefixes = array('Zend', 'Custom');
 Yii::import("ext.yiiext.components.zendAutoloader.EZendAutoloader", true);
 Yii::registerAutoloader(array("EZendAutoloader", "loadClass"), true);
 
+$assetPrefix = $app->assetManager->publish(dirname(__FILE__) . '/resources', true, 0, defined('YII_DEBUG'));
+$app->clientScript->registerScriptFile($assetPrefix . '/fileuploader.js');
+
 $app->run();
