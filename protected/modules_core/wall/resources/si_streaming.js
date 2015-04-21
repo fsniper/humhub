@@ -285,6 +285,14 @@ function Stream(baseElement, urlStart, urlReload, urlSingle) {
                 me.onNewEntries();
 
                 $(me.baseDiv).find(".streamLoader").hide();
+
+                // Let's update our posts
+                var posts = $('.post').map(function (i,e) {
+                    return $(e).attr('id').match(/[0-9]*$/)[0];
+                });
+                   
+                socket.send(JSON.stringify({ command: 'posts', posts: $.makeArray(posts) })); 
+
             }
             me.loadingBusyFlag = false;
         });
