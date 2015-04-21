@@ -1158,7 +1158,7 @@ ul.tour-list li.completed a {
 .atwho-user,
 .atwho-space,
 .atwho-input a {
-  color: #4cd9c0;
+  color: #4cd9c0 !important;
 }
 .atwho-input a:hover {
   color: #4cd9c0;

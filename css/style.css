@@ -845,3 +845,22 @@ textarea.placeholder {
     margin-left: -142px !important;
   }
 }
+
+.fetfrip-comment .like,
+.fetfrip-comment .unlike {
+    font-size: 10px;
+    color: #7777cc !important; 
+}
+
+.fetfrip-username {
+    font-size: 12px;
+    color: #7777cc !important;
+}
+
+.media .time {
+    font-size: 9px !important;
+}
+
+.fetfrip-comment .media-heading span {
+    font-weight: normal;
+}
