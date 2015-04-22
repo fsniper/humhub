@@ -19,7 +19,7 @@
             <!--<li><a href="#"><i class="fa fa-checkfa fa-check-square-o"></i> <?php echo Yii::t('WallModule.widgets_views_stream', 'Show all'); ?></a></li>-->
 
             <li><a href="#" class="wallFilter" id="filter_entry_userinvoled"><i
-                        class="fa fa-square-o"></i> <?php echo Yii::t('WallModule.widgets_views_stream', 'Where I´m involved'); ?></a>
+                        class="fa fa-check-square-o"></i> <?php echo Yii::t('WallModule.widgets_views_stream', 'Where I´m involved'); ?></a>
             </li>
             <li><a href="#" class="wallFilter" id="filter_entry_mine"><i
                         class="fa fa-square-o"></i> <?php echo Yii::t('WallModule.widgets_views_stream', 'Created by me'); ?></a></li>
@@ -148,6 +148,7 @@
         <?php if ($wallEntryId) : ?>
         s.showItem(<?php echo $wallEntryId; ?>);
         <?php else: ?>
+        s.updateFilters();
         s.showStream();
         <?php endif; ?>
 
