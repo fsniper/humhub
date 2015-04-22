@@ -290,8 +290,10 @@ function Stream(baseElement, urlStart, urlReload, urlSingle) {
                 var posts = $('.post').map(function (i,e) {
                     return $(e).attr('id').match(/[0-9]*$/)[0];
                 });
-                   
-                socket.send(JSON.stringify({ command: 'posts', posts: $.makeArray(posts) })); 
+                
+                if (socket.readyState == WebSocket.OPEN) {
+                    socket.send(JSON.stringify({ command: 'posts', posts: $.makeArray(posts) })); 
+                }
 
             }
             me.loadingBusyFlag = false;

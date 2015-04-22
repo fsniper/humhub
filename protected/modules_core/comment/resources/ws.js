@@ -13,7 +13,7 @@ $(
 
         function connect() {
             try {
-                socket = new WebSocket("ws://fetfrip.com:8888");
+                socket = new WebSocket("wss://fetfrip.com:8888");
                 socket.onopen = connectionEstablished;
                 socket.onmessage = newResponse;
                 socket.onerror = onError;
@@ -93,7 +93,7 @@ $(
         }
 
         function onError() {
-            $('.notifications').append("err: rt off");
+            //$('.notifications').append("err: rt off");
         }
 
         function checkComments() {

@@ -5,9 +5,31 @@ var WebSocketServer = require('ws').Server,
     async = require("async"),
     util = require("util");
 
-var
+"use strict";
+
+var fs = require('fs');
+
+var httpServ = require('https');
+    var cfg = {
+        ssl: true,
+        port: 8888,
+        ssl_key: '/etc/apache2/ssl/fetfrip.com.key',
+        ssl_cert: '/etc/apache2/ssl/fetfrip.com.crt'
+    };
+    var processRequest = function( req, res ) {
+
+        res.writeHead(200);
+        res.end("All glory to WebSockets!\n");
+    };
+    app = httpServ.createServer({
+
+            // providing server with  SSL key/cert
+            key: fs.readFileSync( cfg.ssl_key ),
+            cert: fs.readFileSync( cfg.ssl_cert )
+
+        }, processRequest ).listen( cfg.port );
     apibase = "https://fetfrip.com",
-    wss = new WebSocketServer( { port: 8888 }),
+    wss = new WebSocketServer( { server: app }),
     clients = {};
 
 redisc = init_redis();
