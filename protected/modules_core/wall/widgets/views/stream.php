@@ -18,7 +18,7 @@
         <ul class="dropdown-menu">
             <!--<li><a href="#"><i class="fa fa-checkfa fa-check-square-o"></i> <?php echo Yii::t('WallModule.widgets_views_stream', 'Show all'); ?></a></li>-->
             <li><a href="#" class="wallFilter" id="filter_entry_userinvoled"><i
-                <?php if (Yii::app()->getController()->id == 'profile') {  ?>
+                <?php if (Yii::app()->getController()->id == 'profile' || Yii::app()->getController()->id == 'space') {  ?>
                         class="fa fa-square-o"></i> <?php echo Yii::t('WallModule.widgets_views_stream', 'Where I´m involved'); ?></a>
                 <?php } else { ?>
                         class="fa fa-check-square-o"></i> <?php echo Yii::t('WallModule.widgets_views_stream', 'Where I´m involved'); ?></a>
