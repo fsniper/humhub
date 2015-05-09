@@ -26,7 +26,7 @@
 class HVersion
 {
 
-    const VERSION = "0.10.24";
+    const VERSION = "0.10.26";
 
 }
 
