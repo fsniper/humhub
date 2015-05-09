@@ -51,7 +51,11 @@ class EMailing extends HConsoleCommand
         $this->mode = $args[0];
         Yii::import("application.modules_core.wall.*", true);
 
-        $users = User::model()->with('httpSessions')->findAllByAttributes(array('status' => User::STATUS_ENABLED));
+        //$users = User::model()->with('httpSessions')->findAllByAttributes(array('status' => User::STATUS_ENABLED, 'id'=>'1'));
+        $users = User::model()->with('httpSessions')->findAll(array(
+            'condition'=>'status=:status AND user_id > :last_id',
+            'params'=>array(':status'=>User::STATUS_ENABLED, ':last_id'=>65),
+        ));
 
         // Save systems default language - before switching to users language
         $defaultLanguage = Yii::app()->language;
@@ -66,35 +70,38 @@ class EMailing extends HConsoleCommand
             } else {
                 Yii::app()->language = $defaultLanguage;
             }
-            
-            $notificationContent = $this->getNotificationContent($user);
-            $activityContent = $this->getActivityContent($user);
+            try { 
+                $notificationContent = $this->getNotificationContent($user);
+                $activityContent = $this->getActivityContent($user);
 
-            // Something new?
-            if ($notificationContent == "" && $activityContent == "") {
-                print "Nothing new! \n";
-                continue;
+                // Something new?
+                if ($notificationContent == "" && $activityContent == "") {
+                    print "Nothing new! \n";
+                    continue;
+                }
+
+                $message = new HMailMessage();
+                $message->view = 'application.views.mail.EMailing';
+                $message->addFrom(HSetting::Get('systemEmailAddress', 'mailing'), HSetting::Get('systemEmailName', 'mailing'));
+                $message->addTo($user->email);
+
+                if ($this->mode == 'hourly') {
+                    $message->subject = Yii::t('base', "Latest news");
+                } else {
+                    $message->subject = Yii::t('base', "Your daily summary");
+                }
+
+                $message->setBody(array(
+                    'notificationContent' => $notificationContent,
+                    'activityContent' => $activityContent,
+                    'user' => $user,
+                        ), 'text/html');
+                Yii::app()->mail->send($message);
+
+                print "Sent! \n";
+            } catch (Exception $e) {
+                echo 'Caught exception: ',  $e->getMessage(), "\n";
             }
-
-            $message = new HMailMessage();
-            $message->view = 'application.views.mail.EMailing';
-            $message->addFrom(HSetting::Get('systemEmailAddress', 'mailing'), HSetting::Get('systemEmailName', 'mailing'));
-            $message->addTo($user->email);
-
-            if ($this->mode == 'hourly') {
-                $message->subject = Yii::t('base', "Latest news");
-            } else {
-                $message->subject = Yii::t('base', "Your daily summary");
-            }
-
-            $message->setBody(array(
-                'notificationContent' => $notificationContent,
-                'activityContent' => $activityContent,
-                'user' => $user,
-                    ), 'text/html');
-            Yii::app()->mail->send($message);
-
-            print "Sent! \n";
         }
 
         print "\nEMailing completed.\n";
